@@ -10,19 +10,24 @@ var(
 	httpClient = getGithubClient()
 )
 
-func getGithubClient() gohttp.HttpClient{
-	client := gohttp.New()
+func getGithubClient() gohttp.Client{
+
+	client := gohttp.NewBuilder().
+		DisableTimeouts(true).
+		SetMaxIdleConnections(5).
+		Build()
 
 	//Common headers
-	commonHeaders := make(http.Header)
-	commonHeaders.Set("Authorization", "Bearer ABC-123")
-	client.SetHeaders(commonHeaders)
+//	commonHeaders := make(http.Header)
+//	commonHeaders.Set("Authorization", "Bearer ABC-123")
 
 	return client
 }
 
 func main(){
-	getUrls()
+	go func() {
+		getUrls()
+	}()
 }
 
 type User struct {
