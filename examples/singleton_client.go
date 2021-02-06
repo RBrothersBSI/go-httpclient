@@ -1,7 +1,7 @@
 package examples
 
 import (
-	"github.com/bsi/go-httpclient/gohttp"
+	"github.com/RBrothers/go-httpclient/gohttp"
 	"time"
 )
 

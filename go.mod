@@ -1,3 +1,3 @@
-module github.com/bsi/go-httpclient
+module github.com/RBrothersBSI/go-httpclient
 
 go 1.15
