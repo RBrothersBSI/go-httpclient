@@ -32,7 +32,7 @@ func TestGet(t *testing.T){
 
 		//Validation
 		if endpoints != nil {
-			t.Error("No endpoints expected at this point")
+			t.Error("No endpoints expected at this point in test")
 		}
 
 		if err == nil {
