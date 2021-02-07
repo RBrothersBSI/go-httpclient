@@ -43,6 +43,7 @@ func AddMock(mock Mock) {
 	mockupServer.serverMutex.Lock()
 	defer mockupServer.serverMutex.Unlock()
 
+	fmt.Println(mock)
 	key := mockupServer.getMockKey(mock.Method, mock.Url, mock.RequestBody)
 	mockupServer.mocks[key] = &mock
 }
@@ -65,15 +66,17 @@ func (m *mockServer) cleanBody(body string) string {
 }
 
 func (m *mockServer) getMock(method, url, body string) *Mock{
+
 	if !m.enabled {
 		return nil
 	}
+
 
 	if mock := m.mocks[m.getMockKey(method, url, body)]; mock != nil {
 		return mock
 	}
 
 	return &Mock{
-		Error: errors.New(fmt.Sprintf("No mock matching %s from %s with given body", method, url)),
+		Error: errors.New(fmt.Sprintf("No mock matching %s from %s with given body %s", method, url, body)),
 	}
 }
