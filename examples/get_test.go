@@ -13,15 +13,15 @@ import (
 func TestMain(m *testing.M) {
 	fmt.Println("About to start test suite for package examples")
 	//Tell the http library to mock any further requests from here
-	gohttp_mock.StartMockServer()
+	gohttp_mock.MockupServer.Start()
 	os.Exit(m.Run())
 }
 
 func TestGet(t *testing.T){
 	//Init
 	t.Run("TestErrorFetchingFromGithub", func(t *testing.T) {
-		gohttp_mock.DeleteMocks()
-		gohttp_mock.AddMock(gohttp_mock.Mock{
+		gohttp_mock.MockupServer.DeleteMocks()
+		gohttp_mock.MockupServer.AddMock(gohttp_mock.Mock{
 			Method: http.MethodGet,
 			Url: "https://api.github.com",
 			Error: errors.New("Timeout getting response"),
@@ -45,9 +45,9 @@ func TestGet(t *testing.T){
 
 	})
 	t.Run("TestErrorUnmarshalResponseBody", func(t *testing.T) {
-		gohttp_mock.DeleteMocks()
+		gohttp_mock.MockupServer.DeleteMocks()
 		//Init
-		gohttp_mock.AddMock(gohttp_mock.Mock{
+		gohttp_mock.MockupServer.AddMock(gohttp_mock.Mock{
 			Method: http.MethodGet,
 			Url: "https://api.github.com",
 			ResponseStatusCode: http.StatusOK,
@@ -73,8 +73,8 @@ func TestGet(t *testing.T){
 	})
 	t.Run("TestNoError", func(t *testing.T) {
 		//Init
-		gohttp_mock.DeleteMocks()
-		gohttp_mock.AddMock(gohttp_mock.Mock{
+		gohttp_mock.MockupServer.DeleteMocks()
+		gohttp_mock.MockupServer.AddMock(gohttp_mock.Mock{
 			Method: http.MethodGet,
 			Url: "https://api.github.com",
 			ResponseStatusCode: http.StatusOK,
