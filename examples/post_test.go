@@ -3,7 +3,7 @@ package examples
 import (
 	"errors"
 	"fmt"
-	"github.com/RBrothersBSI/go-httpclient/gohttp"
+	"github.com/RBrothersBSI/go-httpclient/gohttp_mock"
 	"net/http"
 	"testing"
 )
@@ -13,9 +13,8 @@ import (
 func TestCreateRepo(t *testing.T){
 
 	t.Run("timeoutFromGithub", func(t *testing.T) {
-		gohttp.FlushMocks()
-
-		gohttp.AddMock(gohttp.Mock{
+		gohttp_mock.DeleteMocks()
+		gohttp_mock.AddMock(gohttp_mock.Mock{
 			Method: http.MethodPost,
 			Url: "https://api.github.com/user/repos",
 			RequestBody: `{"name":"test-repo-timeout","description":"","private":true}`,
@@ -43,9 +42,9 @@ func TestCreateRepo(t *testing.T){
 	})
 
 	t.Run("noError", func(t *testing.T) {
-		gohttp.FlushMocks()
+		gohttp_mock.DeleteMocks()
 
-		gohttp.AddMock(gohttp.Mock{
+		gohttp_mock.AddMock(gohttp_mock.Mock{
 			Method: http.MethodPost,
 			Url: "https://api.github.com/user/repos",
 			RequestBody: `{"name":"test-repo-no-error","description":"","private":true}`,

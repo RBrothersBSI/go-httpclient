@@ -3,7 +3,7 @@ package examples
 import (
 	"errors"
 	"fmt"
-	"github.com/RBrothersBSI/go-httpclient/gohttp"
+	"github.com/RBrothersBSI/go-httpclient/gohttp_mock"
 	"net/http"
 	"os"
 	"strings"
@@ -13,15 +13,15 @@ import (
 func TestMain(m *testing.M) {
 	fmt.Println("About to start test suite for package examples")
 	//Tell the http library to mock any further requests from here
-	gohttp.StartMockServer()
+	gohttp_mock.StartMockServer()
 	os.Exit(m.Run())
 }
 
 func TestGet(t *testing.T){
 	//Init
 	t.Run("TestErrorFetchingFromGithub", func(t *testing.T) {
-		gohttp.FlushMocks()
-		gohttp.AddMock(gohttp.Mock{
+		gohttp_mock.DeleteMocks()
+		gohttp_mock.AddMock(gohttp_mock.Mock{
 			Method: http.MethodGet,
 			Url: "https://api.github.com",
 			Error: errors.New("Timeout getting response"),
@@ -45,9 +45,9 @@ func TestGet(t *testing.T){
 
 	})
 	t.Run("TestErrorUnmarshalResponseBody", func(t *testing.T) {
-		gohttp.FlushMocks()
+		gohttp_mock.DeleteMocks()
 		//Init
-		gohttp.AddMock(gohttp.Mock{
+		gohttp_mock.AddMock(gohttp_mock.Mock{
 			Method: http.MethodGet,
 			Url: "https://api.github.com",
 			ResponseStatusCode: http.StatusOK,
@@ -73,8 +73,8 @@ func TestGet(t *testing.T){
 	})
 	t.Run("TestNoError", func(t *testing.T) {
 		//Init
-		gohttp.FlushMocks()
-		gohttp.AddMock(gohttp.Mock{
+		gohttp_mock.DeleteMocks()
+		gohttp_mock.AddMock(gohttp_mock.Mock{
 			Method: http.MethodGet,
 			Url: "https://api.github.com",
 			ResponseStatusCode: http.StatusOK,
